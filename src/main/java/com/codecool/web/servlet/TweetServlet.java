@@ -47,7 +47,15 @@ public class TweetServlet extends AbstractServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         try (Connection connection = getConnection(req.getServletContext())) {
             TweetDao tDao = new DatabaseTweetDao(connection);
-            List<Tweet> tweets = tDao.getAllTweets();
+            List<Tweet> tweets = null;
+            if(req.getParameter("userFilter")!=null){
+                String filterString=req.getParameter("userFilter");
+                tweets = tDao.getAllTweets(filterString);
+            }else{
+                tweets = tDao.getAllTweets();
+            }
+
+
             req.getSession().setAttribute("tweets",tweets);
             req.getRequestDispatcher("tweets.jsp").forward(req,resp);
         }catch (SQLException ex){

@@ -9,7 +9,9 @@ public interface TweetDao {
 
     List<Tweet> getAllTweets() throws SQLException;
 
-    List<Tweet> getAllTweetsByUsername(String username)throws SQLException;
+    List<Tweet> getAllTweets(String filter) throws SQLException;
+
+
 
     void postTweet(String poster, String content)throws SQLException;
 

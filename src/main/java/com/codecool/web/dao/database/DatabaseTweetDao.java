@@ -28,25 +28,30 @@ public class DatabaseTweetDao extends AbstractDao implements TweetDao {
         }
     }
 
+    @Override
+    public List<Tweet> getAllTweets(String filter) throws SQLException {
+        String sql = "SELECT * FROM tweets WHERE poster LIKE ?;";
+
+        List<Tweet> tweets = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1,"%" + filter+ "%");
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while(resultSet.next()) {
+                    tweets.add(fetchTweet(resultSet));
+                }
+            }
+        }
+            return tweets;
+        }
+
+
     public Tweet fetchTweet(ResultSet resultSet) throws SQLException {
         String poster = resultSet.getString("poster");
         String content = resultSet.getString("content");
         return new Tweet(content,poster);
     }
 
-    @Override
-    public List<Tweet> getAllTweetsByUsername(String username) throws SQLException {
-        String sql = "SELECT * FROM tweets WHERE poster = ?";
-        List<Tweet> tweets = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
-            statement.setString(1,username);
-            ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next()) {
-                tweets.add(fetchTweet(resultSet));
-            }
-            return tweets;
-        }
-    }
+
 
     @Override
     public void postTweet(String poster, String content) throws SQLException {

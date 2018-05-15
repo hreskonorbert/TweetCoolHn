@@ -6,20 +6,26 @@
         <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-            <link rel="stylesheet" type="text/css" href="${styleUrl}">
+            <link rel="stylesheet" type="text/css" href="style.css">
+            <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 
         <title>App</title>
     </head>
 <body>
-
+    <form method="GET" action="new-tweet" id="filterForm">
+        <input type="text" name="userFilter" placeholder="user to filter">
+        <input type="submit" value="filter">
+    </form>
     <div id="tweets">
     <c:forEach items="${tweets}" var="tweet">
-        <h3>Tweet: ${tweet.getContent()}</h4>
-        <h4>Poster: ${tweet.getPoster()}</h3>
+        <div class="tweet">
+        <p>${tweet.getContent()}</p>
+        <h4 id="poster">Poster: ${tweet.getPoster()}</h3>
+        </div>
     </c:forEach>
     </div>
 
-    <a href="homepage.jsp">Back</a>
+    <a id="backToMainButton" href="homepage.jsp">Back</a>
 
 </body>
 </html>
